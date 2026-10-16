@@ -3,10 +3,16 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "workspaces": [
+    "projects/it-service-desk"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "dev:service-desk": "npm run dev --workspace it-service-desk",
+    "build:service-desk": "npm run build --workspace it-service-desk",
+    "test:service-desk": "npm run test --workspace it-service-desk"
   },
   "dependencies": {
     "react": "^19.0.0",
