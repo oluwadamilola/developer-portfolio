@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Projects from "./sections/Projects.jsx";
 
 function ThemeIcon({ theme }) {
   if (theme === "dark") {
@@ -43,9 +44,9 @@ function App() {
       <header className="site-header">
         <a className="wordmark" href="#top" aria-label="Your Name, home">
           <span className="wordmark-mark" aria-hidden="true">
-            YN
+            DC
           </span>
-          <span>Your Name</span>
+          <span>Damilola Olukoju</span>
         </a>
 
         <nav className="navigation" aria-label="Main navigation">
@@ -154,14 +155,7 @@ function App() {
           </div>
         </section>
 
-        <section className="placeholder-section section-wrap" id="projects">
-          <p className="eyebrow">Selected work</p>
-          <h2>Projects will appear here.</h2>
-          <p>
-            This space is ready for project details when you’re ready to add
-            them.
-          </p>
-        </section>
+        <Projects />
 
         <section className="contact-strip section-wrap" id="contact">
           <div>
