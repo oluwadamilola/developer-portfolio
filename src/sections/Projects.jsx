@@ -14,9 +14,8 @@ function Projects() {
           <h2 id="projects-title">Selected Work</h2>
         </div>
         <p className="projects-intro">
-          These project concepts demonstrate an approach to building practical,
-          maintainable software. The examples below are placeholders to be
-          completed or replaced.
+          A selection of projects that show how I approach building practical,
+          maintainable software.
         </p>
       </div>
       <div className="projects-grid">

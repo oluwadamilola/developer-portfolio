@@ -1,15 +1,6 @@
 import { useState } from "react";
 
 function ProjectLink({ href, label, projectTitle }) {
-  if (!href) {
-    return (
-      <span className="project-link project-link-unavailable">
-        {label}
-        <span className="project-link-status">Not added</span>
-      </span>
-    );
-  }
-
   return (
     <a
       className="project-link"
@@ -27,11 +18,21 @@ function ProjectLink({ href, label, projectTitle }) {
 function ProjectCard({ project }) {
   const [imageFailed, setImageFailed] = useState(false);
   const hasImage = project.image && !imageFailed;
+  const links = [
+    project.repositoryUrl && {
+      href: project.repositoryUrl,
+      label: "GitHub repository",
+    },
+    project.liveDemoUrl && {
+      href: project.liveDemoUrl,
+      label: "Live demo",
+    },
+  ].filter(Boolean);
 
   return (
     <article className="project-card">
-      <div className="project-media">
-        {hasImage ? (
+      {hasImage && (
+        <div className="project-media">
           <img
             className="project-image"
             src={project.image}
@@ -39,25 +40,8 @@ function ProjectCard({ project }) {
             loading="lazy"
             onError={() => setImageFailed(true)}
           />
-        ) : (
-          <div className="project-image-placeholder" aria-hidden="true">
-            <span className="preview-window">
-              <span className="preview-window-bar">
-                <i />
-                <i />
-                <i />
-              </span>
-              <span className="preview-window-content">
-                <span />
-                <span />
-                <span />
-              </span>
-            </span>
-            <span className="preview-caption">Preview to be added</span>
-          </div>
-        )}
-        <span className="project-status">{project.status}</span>
-      </div>
+        </div>
+      )}
 
       <div className="project-card-content">
         <h3>{project.title}</h3>
@@ -67,22 +51,22 @@ function ProjectCard({ project }) {
             <li key={technology}>{technology}</li>
           ))}
         </ul>
-        <div
-          className="project-links"
-          role="group"
-          aria-label={`${project.title} links`}
-        >
-          <ProjectLink
-            href={project.repositoryUrl}
-            label="GitHub"
-            projectTitle={project.title}
-          />
-          <ProjectLink
-            href={project.liveDemoUrl}
-            label="Live demo"
-            projectTitle={project.title}
-          />
-        </div>
+        {links.length > 0 && (
+          <div
+            className="project-links"
+            role="group"
+            aria-label={`${project.title} links`}
+          >
+            {links.map((link) => (
+              <ProjectLink
+                key={link.label}
+                href={link.href}
+                label={link.label}
+                projectTitle={project.title}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </article>
   );
