@@ -7,7 +7,7 @@
       name="description"
       content="A demonstration IT service desk dashboard for managing support tickets."
     />
-    <meta name="theme-color" content="#101713" />
+    <meta name="theme-color" content="#1C1917" />
     <title>Service Desk Dashboard</title>
     <script>
       (() => {
@@ -26,6 +26,9 @@
         }
 
         document.documentElement.dataset.theme = theme;
+        document
+          .querySelector('meta[name="theme-color"]')
+          .setAttribute("content", theme === "dark" ? "#1C1917" : "#FAFAF9");
       })();
     </script>
   </head>

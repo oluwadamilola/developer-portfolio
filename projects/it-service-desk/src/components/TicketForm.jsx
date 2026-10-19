@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   TICKET_PRIORITIES,
   validateTicketForm,
 } from "../services/ticketOperations.js";
 
 function TicketForm({ ticket, onCancel, onSubmit }) {
+  const titleInputRef = useRef(null);
   const [values, setValues] = useState({
     title: ticket?.title ?? "",
     requester: ticket?.requester ?? "",
@@ -12,6 +13,10 @@ function TicketForm({ ticket, onCancel, onSubmit }) {
     priority: ticket?.priority ?? "Medium",
   });
   const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    titleInputRef.current?.focus();
+  }, []);
 
   function updateValue(event) {
     const { name, value } = event.target;
@@ -47,6 +52,7 @@ function TicketForm({ ticket, onCancel, onSubmit }) {
         <div className="form-field">
           <label htmlFor="ticket-title">Title</label>
           <input
+            ref={titleInputRef}
             id="ticket-title"
             name="title"
             value={values.title}

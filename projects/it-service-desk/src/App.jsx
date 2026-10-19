@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import DashboardHeader from "./components/DashboardHeader.jsx";
 import SummaryCard from "./components/SummaryCard.jsx";
 import TicketFilters from "./components/TicketFilters.jsx";
@@ -24,11 +24,28 @@ function App() {
   const [formTicket, setFormTicket] = useState(undefined);
   const [feedback, setFeedback] = useState("");
   const [storageError, setStorageError] = useState("");
+  const ticketFormOpenerRef = useRef(null);
+  const newTicketButtonRef = useRef(null);
+  const wasTicketFormOpenRef = useRef(false);
 
   useEffect(() => {
     const result = saveTickets(tickets);
     setStorageError(result.error || "");
   }, [tickets]);
+
+  useEffect(() => {
+    if (formTicket !== undefined) {
+      wasTicketFormOpenRef.current = true;
+      return;
+    }
+
+    if (wasTicketFormOpenRef.current) {
+      const returnTarget = ticketFormOpenerRef.current;
+      (returnTarget?.isConnected ? returnTarget : newTicketButtonRef.current)?.focus();
+      ticketFormOpenerRef.current = null;
+      wasTicketFormOpenRef.current = false;
+    }
+  }, [formTicket]);
 
   const visibleTickets = useMemo(
     () =>
@@ -59,6 +76,9 @@ function App() {
   function toggleTheme() {
     const nextTheme = theme === "dark" ? "light" : "dark";
     document.documentElement.dataset.theme = nextTheme;
+    document
+      .querySelector('meta[name="theme-color"]')
+      ?.setAttribute("content", nextTheme === "dark" ? "#1C1917" : "#FAFAF9");
     setTheme(nextTheme);
 
     try {
@@ -128,9 +148,11 @@ function App() {
             </p>
           </div>
           <button
+            ref={newTicketButtonRef}
             className="button button-primary add-ticket-button"
             type="button"
             onClick={() => {
+              ticketFormOpenerRef.current = newTicketButtonRef.current;
               setFormTicket(null);
               setFeedback("");
             }}
@@ -212,6 +234,7 @@ function App() {
           <TicketTable
             tickets={visibleTickets}
             onEdit={(ticket) => {
+              ticketFormOpenerRef.current = document.activeElement;
               setFormTicket(ticket);
               setFeedback("");
             }}
